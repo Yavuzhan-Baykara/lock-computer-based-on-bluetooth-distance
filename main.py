@@ -1,10 +1,8 @@
 import bluetooth
-import ctypes
 import subprocess
-from subprocess import Popen, PIPE
-import time
-import multiprocessing
+from subprocess import sys
 from multiprocessing import Pool
+
 
 def discover_devices():
     nearby_devices = bluetooth.discover_devices()
@@ -27,10 +25,12 @@ def activate():
 
 if __name__ == "__main__":
     while True:
-
         if not activate() == []:
+            USER = None
+            PASSWORD = None
+            proc = subprocess.Popen(['runas',f'/user:{USER}',sys.argv[0]], stdin=subprocess.PIPE) 
+            proc.stdin.write(PASSWORD)
             print("Bluetooth is active")
-
         else:
             print(activate())
             cmd='rundll32.exe user32.dll, LockWorkStation'
